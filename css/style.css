@@ -1,0 +1,163 @@
+body {
+	background-color: wheat;
+	scroll-behavior: smooth;
+	overflow: scroll;
+}
+
+.content {
+	padding: 20px 4rem 20px 4rem;
+}
+
+h1 {
+	font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+		"Lucida Sans", Arial, sans-serif;
+	text-align: center;
+}
+
+nav {
+	display: flex;
+	justify-content: space-between;
+	background-color: black;
+	padding: 20px;
+	align-items: center;
+	width: 70%;
+	margin: auto;
+}
+
+nav a {
+	color: white;
+	text-decoration: none;
+	font-size: 20px;
+}
+.active {
+	color: black;
+	background-color: darkgray;
+	text-decoration: none;
+	font-size: 20px;
+	padding: 5px;
+}
+nav ul {
+	display: flex;
+	margin: 5px;
+	width: 200px;
+	justify-content: space-between;
+}
+
+nav li {
+	text-decoration: none;
+}
+
+.row {
+	display: flex;
+	justify-content: space-around;
+	margin-top: 3rem;
+}
+
+.mentor {
+	margin: auto;
+	width: fit-content;
+}
+
+.avatar {
+	margin: auto;
+	vertical-align: middle;
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+}
+
+.teamname {
+	text-align: center;
+}
+
+.members {
+	margin-top: 20px;
+}
+.description {
+	width: 200px;
+	margin-top: 20px;
+	margin: auto;
+}
+
+.logo {
+	display: flex;
+	width: 300px;
+	justify-content: space-between;
+}
+
+.logo h1 {
+	color: white;
+	align-items: center;
+	text-align: center;
+	display: flex;
+}
+
+.log {
+	margin: auto;
+	vertical-align: middle;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
+
+.intro {
+	margin: auto;
+	width: fit-content;
+}
+.intro p {
+	width: 400px;
+	text-align: center;
+}
+
+.member {
+	background: rgba(0, 0, 0, 0.5);
+	width: 400px;
+	padding: 15px;
+	border-radius: 20%;
+	text-align: center;
+	height: fit-content;
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+li {
+	text-decoration: none;
+}
+.main-text {
+	margin: auto;
+	width: 65%;
+}
+
+@media only screen and (max-width: 768px) {
+	.row {
+		display: block;
+	}
+	.member {
+		margin-top: 2rem;
+		width: 250px;
+	}
+	nav h1 {
+		font-size: 15px;
+	}
+	.log {
+		height: 25px;
+		width: 25px;
+		margin: auto;
+	}
+	.content {
+		margin: 0px;
+	}
+	.intro p {
+		width: 250px;
+	}
+	.logo {
+		display: block;
+		width: 150px;
+	}
+	.img {
+		margin: auto;
+		width: fit-content;
+	}
+}

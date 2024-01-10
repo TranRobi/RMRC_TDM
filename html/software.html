@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<title>Kókány Corporations</title>
+	</head>
+	<body>
+		<div>
+			<nav>
+				<div class="logo">
+					<img src="../img/pfp3.jpg" alt="logo" class="avatar log" />
+					<h1>Kókány Corporations</h1>
+				</div>
+				<ul>
+					<li><a href="team.html">Team</a></li>
+					<li><a href="KokanyBot.html">KókányBot</a></li>
+				</ul>
+			</nav>
+		</div>
+		<div class="content">
+			<div class="main-text">
+				<h1>Our Software made by Zsolti Vadász</h1>
+				<h3>Training an object detection model</h3>
+
+				<p>
+					Last time, one of the most challanging aspects of the competition was
+					the object detection feature robots needed. Back in in Bordeaux, we
+					failed to detect anything and got 0 points for object detection. We
+					definitely needed to improve on that.
+				</p>
+
+				<p>
+					Firstly, we found a large enough dataset on the internet (1k+ photos),
+					which was a godsend because it spared us from having to manually take
+					pictures and tag them.
+				</p>
+
+				<p>
+					Secondly, we switched from the outdated YoloV5 to the up-to-date
+					YoloV8 which is supposedly better in every single way. We chose the
+					small version, because the larger the model, the slower inference is,
+					and while performance doesn’t really matter when training, one can
+					simply leave their computer running while they are not home, but it is
+					vital during inference, because our laptops are not on par with our
+					workstations at home in terms of performance.
+				</p>
+
+				<p>
+					To use our model, we wrote a script named kokanyrecognize at the last
+					minute. It wasn’t very performant nor really clean, so we spent a
+					significant amount of time working on it. So far it was modified in 4
+					commits since the last competition, and it still has a long way to go.
+				</p>
+
+				<p>Here is the result so far:</p>
+				<img
+					src="../img/inference.jpg"
+					alt="Image showcasing the accuracy of our model"
+				/>
+				<h3>Video and audio streaming</h3>
+				<p>
+					During tests, operators are only allowed to see the arenas from their
+					robot’s point of view. This meant we needed a way to find a way to
+					display the video data from the robot’s camera.
+				</p>
+				<p>
+					Multimedia related tasks are surprisingly computation heavy when one
+					is working with embedded systems. The CPU in the Raspberry Pi 4B+ is
+					fairly capable, however we also had to consider power draw and thermal
+					related problems. We considered several video formats: H.265, AV1 and
+					H.264, but in the end we settled on using good old H.264 for a few
+					reasons:
+				</p>
+				<ul>
+					<li>
+						Newer formats use more CPU cycles, increasing temperature and power
+						draw
+					</li>
+					<li>We use a Cat5e ethernet cable so the savings in size are moot</li>
+					<li>The Pi 4 has a hardware H.264 encoder</li>
+				</ul>
+				<p>
+					For audio, we considered several formats, both lossy and lossless, but
+					since audio data isn’t that large anyway, and compressing it still
+					takes some processing power, we settled on using plain WAVE.
+				</p>
+				<p>
+					To implement the actual capturing and transmission we used a simple
+					FFmpeg commandline in a
+					<a
+						href="https://github.com/zsoltiv/kokanybot/blob/master/kokanystream.sh"
+						target="_blank"
+						>shell script</a
+					>. We picked FFmpeg because as its
+					<a href="https://ffmpeg.org" target="_blank">project page</a>
+					suggests, it's a multimedia swiss army knife that can handle a wide
+					array of use cases, including
+					<a
+						href="http://trac.ffmpeg.org/wiki/StreamingGuide#Pointtopointstreaming"
+						target="_blank"
+						>point-to-point</a
+					>
+					streaming via TCP, allowing us to reduce the infrastructure required
+					to transmit the audiovisual data.
+				</p>
+				<p>
+					On the client side, we implemented the decoding of the video data
+					using FFmpeg’s libavformat and libavcodec libraries. Rendering the
+					video frames was tricky to figure out because pretty much all video
+					encoders store pixels in YCbCr colour space, which SDL isn’t the best
+					for.
+				</p>
+				<p>
+					The APIs of the libav* libraries are <b>huge</b>. Thankfully we only
+					really needed the
+					<a
+						href="https://ffmpeg.org/doxygen/trunk/group__lavc__encdec.html"
+						target="_blank"
+						>high level decoding API</a
+					>. The
+					<a
+						href="https://github.com/namndev/FFmpegTutorial/blob/master/learn-ffmpeg-libav-the-hard-way.md"
+						target="_blank"
+						>Learn FFmpeg libav the Hard Way</a
+					>
+					tutorial combined with the
+					<a
+						href="https://git.ffmpeg.org/gitweb/ffmpeg.git/tree/HEAD:/doc/examples"
+						target="_blank"
+						>examples</a
+					>
+					in the project's documentation also made things much easier.
+				</p>
+				<ul>
+					<li>
+						We learned how to make printed circuit board designs using KiCAD.
+					</li>
+				</ul>
+				<p>
+					So far, prepairing for this competition has been a great learning
+					experience for the entire team.
+				</p>
+				<h2>Software packages used</h2>
+				<table>
+					<tbody>
+						<tr class="odd">
+							<td>
+								<a
+									href="https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git/about/"
+									target="_blank"
+								>
+									libgpiod
+								</a>
+							</td>
+							<td>DC motor control, sensor control, stepper control</td>
+						</tr>
+						<tr class="even">
+							<td>
+								<a
+									href="https://www.kernel.org/doc/html/v6.1/i2c/index.html"
+									target="_blank"
+								>
+									libi2c
+								</a>
+							</td>
+							<td>Communicating with the MCP23017</td>
+						</tr>
+						<tr class="odd">
+							<td>
+								<a href="https://opencv.org/" target="_blank"> OpenCV </a>
+							</td>
+							<td>Image recognition</td>
+						</tr>
+						<tr class="even">
+							<td>
+								<a href="https://ffmpeg.org/" target="_blank"> FFmpeg </a>
+							</td>
+							<td>
+								Video streaming, Image recognition backend (used by OpenCV)
+							</td>
+						</tr>
+						<tr class="odd">
+							<td>
+								<a href="https://www.libsdl.org/" target="_blank"> SDL2 </a>
+							</td>
+							<td>
+								Used by KókányControl to process keyboard input and display
+								video
+							</td>
+						</tr>
+						<tr class="even">
+							<td>
+								<a href="https://github.com/libsdl-org/SDL_ttf" target="_blank">
+									SDL2_ttf
+								</a>
+							</td>
+							<td>
+								Used by KókányControl to draw text for displaying sensor data
+							</td>
+						</tr>
+						<tr class="odd">
+							<td>
+								<a href="https://github.com/libsdl-org/SDL_net" target="_blank">
+									SDL2_net
+								</a>
+							</td>
+							<td>Used by KókányControl to handle networking</td>
+						</tr>
+						<tr class="even">
+							<td>
+								<a href="https://zbar.sourceforge.net/" target="_blank">
+									libzbar
+								</a>
+							</td>
+							<td>Used for QR code detection</td>
+						</tr>
+						<tr class="odd">
+							<td>
+								<a
+									href="https://github.com/ultralytics/ultralytics"
+									target="_blank"
+								>
+									YoloV8 (small)
+								</a>
+							</td>
+							<td>The model we use for object detection</td>
+						</tr>
+						<tr class="even">
+							<td>
+								<a
+									href="https://universe.roboflow.com/new-workspace-xqnz7/rmrc-dqa9p"
+									target="_blank"
+								>
+									RMRC Dataset
+								</a>
+							</td>
+							<td>Dataset used for training our image recognition model</td>
+						</tr>
+						<tr class="odd">
+							<td>
+								<a href="https://undefined-medium.com/" target="_blank">
+									undefined medium
+								</a>
+							</td>
+							<td>The font used in kokanyctl</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>

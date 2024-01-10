@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<title>Kókány Corporations</title>
+	</head>
+	<body>
+		<div>
+			<nav>
+				<div class="logo">
+					<div class="img">
+						<img src="../img/pfp3.jpg" alt="logo" class="log" />
+					</div>
+					<h1>Kókány Corporations</h1>
+				</div>
+				<ul>
+					<li><a href="team.html">Team</a></li>
+					<li><a href="KokanyBot.html" class="active">KókányBot</a></li>
+				</ul>
+			</nav>
+		</div>
+		<div class="content">
+			<div class="system">
+				<div class="system-title">
+					<h1>System description</h1>
+				</div>
+				<div class="main-text">
+					<div class="paragraphs">
+						<p>
+							Our robot’s body is entirely 3D printed, which makes it easier to
+							reproduce our work. The 3-layer plexiglass structure we used in
+							the previous year cost us a great deal, because it was difficult
+							to change batteries, therefor we opted for a box design.
+						</p>
+					</div>
+					<div class="paragraphs">
+						<p>
+							It uses a Raspberry Pi 4B+ as its onboard computer. There were no
+							issues with this single board computer in the previous year, aside
+							from some rather embarrassing software problems that we will
+							detail later in the document. We initially planned on using the
+							new Raspberry Pi 5, however its lack of hardware video encoding,
+							availability and its newness in general were concerns for us,
+							while its improvements didn’t really matter for our case.
+						</p>
+					</div>
+					<div class="paragraphs">
+						<p>
+							The Pi 5 promises much better performance, PCIe, two DSI camera
+							ports. None of our components use PCIe nor would they benefit from
+							them (I2C’s 100kbit/s speed is more than enough). The better
+							performance is always welcome, however the only code running on
+							our robot is a daemon that receives commands via a TCP connection
+							and controls our motors and arm (each command has been
+							<a
+								href="https://github.com/zsoltiv/kokanybot/blob/8a7fe3d6d123dfbd4f2134de911d977b6d5487fc/src/input.c#L30"
+								target="_blank"
+							>
+								squeezed into a single byte</a
+							>), and and
+							<a
+								href="https://github.com/zsoltiv/kokanybot/blob/master/kokanystream.sh"
+								target="_blank"
+							>
+								FFmpeg script</a
+							>
+							that captures from a webcam, transcodes the video using the Pi’s
+							hardware encoder and streams it over a TCP connection. The DSI
+							camera ports are pretty much moot, we can simply use USB webcams.
+						</p>
+					</div>
+					<div class="paragraphs">
+						<p>
+							along with four DC motors, a battery pack housing three 18650
+							power supplies, an MCP23017 integrated circuit to provide extra
+							GPIO lines for stepper motors, a webcamera, and a 3D printed robot
+							arm. For motor control, we use an L298N integrated circuit. We use
+							an MQ-135-M smoke sensor for CO2 sensing.
+						</p>
+					</div>
+					<div class="paragraphs">
+						<p>
+							We interact with our robot using a few custom programs, named
+							KókányControl (kokanyctl) and KókányRecognize (kokanyrecognize).
+						</p>
+					</div>
+					<div class="paragraphs">
+						<p>
+							KókányControl has a graphical interface for displaying the video
+							and the sensor data it receives from Kókánybot. It takes keyboard
+							input, and sends commands to the Raspberry Pi. It also recognizes
+							QR codes that appear on Kókánybot’s camera.
+						</p>
+					</div>
+					<div class="paragraphs">
+						<p>
+							KókányRecognize was written to reduce the complexity of
+							KókányControl, since image recognition functionality is only
+							needed in a few runs, and we can just launch KókányRecognize
+							whenever we need it. This also enabled us to build KókányControl
+							in pure C, since we would have needed to use C++ to build the
+							image recognition bits (which uses OpenCV).
+						</p>
+					</div>
+					<div class="paragraphs">
+						<p>The robot can be controlled via WiFi (2.4Ghz) or Ethernet.</p>
+					</div>
+					<div class="paragraphs">
+						<h2>Setup and packup of the robot and operator station</h2>
+						<p>
+							To set up the robot, we charge the 18650 batteries, put them into
+							the battery pack, and flip a switch on our robot.
+						</p>
+						<p>
+							For the operating station, we use a laptop. We connect to our
+							portable WiFi router, and access the onboard computer’s web
+							interface.
+						</p>
+					</div>
+					<div class="paragraphs">
+						<h2>Mission strategy</h2>
+						<p>
+							We use standard, easily acquirable parts, which makes our robot
+							truly rapidly manufacturable.
+						</p>
+						<a href="hardware.html" class="robot">-About Hardware*</a>
+					</div>
+					<div class="paragraphs">
+						<h2>Experiments and Testing</h2>
+						<p>
+							We have conducted image recognition tests, and tested the movement
+							of our robot in our school. Our image recognition model
+							successfully recognized hazmat labels with an 80% accuracy.
+						</p>
+						<a href="software.html" class="robot">*About Software*</a>
+					</div>
+					<div class="paragraphs">
+						<h2>Strengths and real-life applications</h2>
+						<p>
+							We focused on making our robot compact, easily manufacturable and
+							well-rounded, with portable software so the same program can be
+							used with different single board computers. For image recognition,
+							we trained our own model based on the YoloV8 framework’s small
+							starting model. This reduces the processing power needed to do
+							inference, enabling less powerful hardware to be used (we
+							demonstrated this in the previous competition by using a 2 core 4
+							thread Thinkpad T410).
+						</p>
+					</div>
+					<div class="paragraphs">
+						<h2>What the team has learned so far</h2>
+						<ul>
+							<li>
+								We gained experience with Fusion360 and TinkerCAD and 3D
+								printing
+							</li>
+							<li>
+								<p>
+									Instead of Python, we opted for C for the core functionality
+									which enabled us to learn a lot about interacting with
+									hardware at a lower level:
+								</p>
+
+								<ul>
+									<li>Using standard Linux APIs</li>
+									<li>Using I2C to communicate with integrated circuits</li>
+									<li>Reading datasheets</li>
+									<li>
+										Learned to embed FFmpeg in C programs using their various
+										<a
+											href="https://ffmpeg.org/doxygen/trunk/index.html"
+											target="_blank"
+											>libraries</a
+										>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
