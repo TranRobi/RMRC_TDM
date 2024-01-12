@@ -51,14 +51,19 @@ nav li {
 .row {
   display: flex;
   justify-content: space-around;
+  width: 1500px;
   margin-top: 3rem;
 }
-
-.mentor {
-  margin: auto;
-  width: fit-content;
+.row2{
+  margin-top: 3rem;
+  display: flex;
+  justify-content: space-around;
+  width: 1500px;
 }
-
+.members{
+  width: fit-content;
+  margin: auto;
+}
 .avatar {
   margin: auto;
   vertical-align: middle;
@@ -70,12 +75,6 @@ nav li {
 
 .teamname {
   text-align: center;
-}
-
-.members {
-  margin-top: 20px;
-  width: 70%;
-  margin: auto;
 }
 .description {
   width: 250x;
@@ -149,6 +148,17 @@ li {
 
 a:hover {
   color: grey;
+}
+
+.member-border{
+  margin: auto;
+  width: fit-content;
+  padding: 10px;
+  background-color: wheat;
+  margin-top: 20px;
+  border-radius: 15px;
+  border: 1px black solid;
+  box-shadow: 5px 10px rgba(0, 0, 0, 0.5);
 }
 
 @media only screen and (max-width: 768px) {
