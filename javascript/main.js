@@ -57,7 +57,7 @@ loader.load(
 	}
 );
 loader.load(
-	`../models//scene1.gltf`,
+	`../models//scene2.gltf`,
 	function (gltf) {
 		//If the file is loaded, add it to the scene
 		object2 = gltf.scene;
@@ -90,7 +90,11 @@ camera2.position.z = 300;
 const topLight = new THREE.DirectionalLight(0xffffff, 1); // (color, intensity)
 topLight.position.set(500, 500, 500); //top-left-ish
 topLight.castShadow = true;
+const topLight2 = new THREE.DirectionalLight(0xffffff, 1); // (color, intensity)
+topLight2.position.set(500, 500, 500); //top-left-ish
+topLight2.castShadow = true;
 scene.add(topLight);
+scene2.add(topLight2);
 
 const ambientLight = new THREE.AmbientLight(
 	0x333333,
