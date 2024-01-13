@@ -18,7 +18,7 @@ const loader = new GLTFLoader();
 //Load the file
 const modelPaths = ['../models//scene1.gltf', '../models//scene2.gltf','../models//scene3.gltf', '../models//scene5.gltf','../models//scene6.gltf', '../models//scene7.gltf', '../models//scene8.gltf', '../models//scene9.gltf']; // Array to store all model paths
 const title = document.getElementById("titleFor3D");
-const titleList = ["Robotics Arm Base", "Robotics Arm Grabber Componets", "Robotics Arm Joint 1", "Robotics Arm Joint 2", "Robotcs Arm Stepper holder","Robotics Arm in one peace", "Robot Base", "Stepper PCB"]
+const titleList = ["Robotic Arm Base", "Robotic Arm Grabber Componets", "Robotic Arm Joint 1", "Robotic Arm Joint 2", "Robotic Arm Stepper holder","Robotic Arm in one peace", "Robot Base", "Stepper PCB"]
 let currentPathIndex = 0; // index in the path array of the currently showing model
 let currentModel; // stores the model that is currently displaying
 loadModel(currentPathIndex);
