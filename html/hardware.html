@@ -27,80 +27,87 @@
         </ul>
       </nav>
     </div>
-    <div class="content">
-      <table id="partlist">
-        <tbody>
-          <tr>
-            <td>Component</td>
-            <td>Cost (in Euros)</td>
-          </tr>
-          <tr>
-            <td>Raspberry Pi 4B+</td>
-            <td>71</td>
-          </tr>
-          <tr>
-            <td>2x MCP23017</td>
-            <td>4.1</td>
-          </tr>
-          <tr>
-            <td>4x ULN2803A</td>
-            <td>1.93</td>
-          </tr>
-          <tr>
-            <td>MQ-135-M</td>
-            <td>2.1</td>
-          </tr>
-          <tr>
-            <td>4x 12V DC motors</td>
-            <td>20.1</td>
-          </tr>
-          <tr>
-            <td>Parkside X20V Team</td>
-            <td>42.16</td>
-          </tr>
-          <tr>
-            <td>6x 28BYJ-48</td>
-            <td>14.84</td>
-          </tr>
-          <tr>
-            <td>12V DC step-down module</td>
-            <td>1.56</td>
-          </tr>
-          <tr>
-            <td>Webcamera</td>
-            <td>26.78</td>
-          </tr>
-          <tr>
-            <td>2x LT-623</td>
-            <td>4.23</td>
-          </tr>
-          <tr>
-            <td>1 pF SMD0805 capacitor</td>
-            <td>0.029</td>
-          </tr>
-          <tr>
-            <td>8x B5B-XH-A</td>
-            <td>1.29</td>
-          </tr>
-          <tr>
-            <td>PCB manufacturing + shipping</td>
-            <td>22.83</td>
-          </tr>
-          <tr>
-            <td>1kg PLA filament for 3D prints</td>
-            <td>19.75</td>
-          </tr>
-          <tr>
-            <td>Overall cost of components</td>
-            <td id="totalcost"></td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="main-text">
+      <div class="content">
+        <table id="partlist">
+          <tbody>
+            <tr>
+              <th>Component</th>
+              <th>Cost (in Euros)</th>
+            </tr>
+            <tr>
+              <td>Raspberry Pi 4B+</td>
+              <td>71</td>
+            </tr>
+            <tr>
+              <td>2x MCP23017</td>
+              <td>4.1</td>
+            </tr>
+            <tr>
+              <td>4x ULN2803A</td>
+              <td>1.93</td>
+            </tr>
+            <tr>
+              <td>MQ-135-M</td>
+              <td>2.1</td>
+            </tr>
+            <tr>
+              <td>4x 12V DC motors</td>
+              <td>20.1</td>
+            </tr>
+            <tr>
+              <td>Parkside X20V Team</td>
+              <td>42.16</td>
+            </tr>
+            <tr>
+              <td>6x 28BYJ-48</td>
+              <td>14.84</td>
+            </tr>
+            <tr>
+              <td>12V DC step-down module</td>
+              <td>1.56</td>
+            </tr>
+            <tr>
+              <td>Webcamera</td>
+              <td>26.78</td>
+            </tr>
+            <tr>
+              <td>2x LT-623</td>
+              <td>4.23</td>
+            </tr>
+            <tr>
+              <td>1 pF SMD0805 capacitor</td>
+              <td>0.029</td>
+            </tr>
+            <tr>
+              <td>8x B5B-XH-A</td>
+              <td>1.29</td>
+            </tr>
+            <tr>
+              <td>PCB manufacturing + shipping</td>
+              <td>22.83</td>
+            </tr>
+            <tr>
+              <td>1kg PLA filament for 3D prints</td>
+              <td>19.75</td>
+            </tr>
+            <tr>
+              <td>Overall cost of components</td>
+              <td id="totalcost"></td>
+            </tr>
+          </tbody>
+        </table>
+        <h1>Our 3D models</h1>
+        <p>Hold down left click to rotate the object, zoom in and out with the middle wheel on the mouse, hold down right click to drag around</p>
+        <div id="container3D" class="models">
+          <h4 id="titleFor3D"></h2>
+          <h4>
+            <a href="https://github.com/TranRobi/Kokanybot-Robot-3Dmodels" target="_blank">Gihub link for the parts of our robot</a>
+          </h4>
+          </div>
+          <button id="click">Check Next Object</button>
+        </div>
     </div>
-    <div id="container3D" class="models">
-      <h2 id="titleFor3D"></h2>
-    </div>
-    <button id="click">Click me</button>
     <script type="module" src="../javascript/main.js"></script>
     <script src="../javascript/totalcost.js"></script>
   </body>

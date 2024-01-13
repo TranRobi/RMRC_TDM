@@ -16,9 +16,9 @@ let controls;
 //Instantiate a loader for the .gltf file
 const loader = new GLTFLoader();
 //Load the file
-const modelPaths = ['../models//scene1.gltf', '../models//scene2.gltf','../models//scene3.gltf','../models//scene4.stl', '../models//scene5.gltf','../models//scene6.gltf', '../models//scene7.gltf']; // Array to store all model paths
+const modelPaths = ['../models//scene1.gltf', '../models//scene2.gltf','../models//scene3.gltf', '../models//scene5.gltf','../models//scene6.gltf', '../models//scene7.gltf', '../models//scene8.gltf', '../models//scene9.gltf']; // Array to store all model paths
 const title = document.getElementById("titleFor3D");
-const titleList = ["Grabber motor holder", "Grabber base and gear", "Arm Joint 1", "Arm Joint 2", "Stepper PCB", "Robot Arm Together"]
+const titleList = ["Robotics Arm Base", "Robotics Arm Grabber Componets", "Robotics Arm Joint 1", "Robotics Arm Joint 2", "Robotcs Arm Stepper holder","Robotics Arm in one peace", "Robot Base", "Stepper PCB"]
 let currentPathIndex = 0; // index in the path array of the currently showing model
 let currentModel; // stores the model that is currently displaying
 loadModel(currentPathIndex);
@@ -51,10 +51,9 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth / 3, window.innerHeight / 3);
 //Add the renderer to the DOM
 document.getElementById("container3D").appendChild(renderer.domElement);
-camera.position.z = 200;
+camera.position.z = 300;
 //Add lights to the scene, so we can actually see the 3D model
 const topLight = new THREE.HemisphereLight(0xffffff,0x000000, 2); 
-topLight.position.set(500, 500, 500); 
 scene.add(topLight);
 
 //This adds controls to the camera, so we can rotate / zoom it with the mouse
