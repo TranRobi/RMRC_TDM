@@ -33,33 +33,117 @@
 			<div class="system">
 				<div class="main-text">
 					<h1>Problems we encountered and our solutions</h1>
-					<div class="paragraphs">
-						<p>
-							We interact with our robot using a few custom programs, named
-							KókányControl (kokanyctl) and KókányRecognize (kokanyrecognize).
-						</p>
-					</div>
-					<div class="paragraphs">
-						<p>
-							KókányControl has a graphical interface for displaying the video
-							and the sensor data it receives from Kókánybot. It takes keyboard
-							input, and sends commands to the Raspberry Pi. It also recognizes
-							QR codes that appear on Kókánybot’s camera.
-						</p>
-					</div>
-					<div class="paragraphs">
-						<p>
-							KókányRecognize was written to reduce the complexity of
-							KókányControl, since image recognition functionality is only
-							needed in a few runs, and we can just launch KókányRecognize
-							whenever we need it. This also enabled us to build KókányControl
-							in pure C, since we would have needed to use C++ to build the
-							image recognition bits (which uses OpenCV).
-						</p>
-					</div>
-					<div class="paragraphs">
-						<p>The robot can be controlled via WiFi (2.4Ghz) or Ethernet.</p>
-					</div>
+				<h2>Training an object detection model</h2>
+
+				<p>
+					Last time, one of the most challanging aspects of the competition was
+					the object detection feature robots needed. Back in in Bordeaux, we
+					failed to detect anything and got 0 points for object detection. We
+					definitely needed to improve on that.
+				</p>
+
+				<p>
+					Firstly, we found a large enough dataset on the internet (1k+ photos),
+					which was a godsend because it spared us from having to manually take
+					pictures and tag them.
+				</p>
+
+				<p>
+					Secondly, we switched from the outdated YoloV5 to the up-to-date
+					YoloV8 which is supposedly better in every single way. We chose the
+					small version, because the larger the model, the slower inference is,
+					and while performance doesn’t really matter when training, one can
+					simply leave their computer running while they are not home, it is still
+					vital during inference, because our laptops are not on par with our
+					workstations at home.
+				</p>
+
+				<p>
+					To use our model, we wrote a script named kokanyrecognize at the last
+					minute. It wasn’t very performant nor really clean, so we spent a
+					significant amount of time working on it. So far it was rewritten
+					to use the new model, however it still has a long way to go.
+				</p>
+
+				<p>Here is the result so far:</p>
+				<img
+					src="../img/inference.jpg"
+					alt="Image showcasing the accuracy of our model"
+				/>
+				<h2>Video and audio streaming</h2>
+				<p>
+					During tests, operators are only allowed to see the arenas from their
+					robot’s point of view. This meant we needed a way to find a way to
+					display the video data from the robot’s camera.
+				</p>
+				<p>
+					Multimedia related tasks are surprisingly computation heavy when one
+					is working with embedded systems. The CPU in the Raspberry Pi 4B+ is
+					fairly capable, however we also had to consider power draw and thermal
+					related problems. We considered several video formats: H.265, AV1 and
+					H.264, but in the end we settled on using good old H.264 for a few
+					reasons:
+				</p>
+				<ul>
+					<li>
+						Newer formats use more CPU cycles, increasing temperature and power
+						draw
+					</li>
+					<li>We use a Cat5e ethernet cable so the savings in size are moot</li>
+					<li>The Pi 4 has a hardware H.264 encoder</li>
+				</ul>
+				<p>
+					For audio, we considered several formats, both lossy and lossless, but
+					since audio data isn’t that large anyway, and compressing it still
+					takes some processing power, we settled on using plain WAVE.
+				</p>
+				<p>
+					To implement the actual capturing and transmission we used a simple
+					FFmpeg commandline in a
+					<a
+						href="https://github.com/zsoltiv/kokanybot/blob/master/kokanystream.sh"
+						target="_blank"
+						>shell script</a
+					>. We picked FFmpeg because as its
+					<a href="https://ffmpeg.org" target="_blank">project page</a>
+					suggests, it's a multimedia swiss army knife that can handle a wide
+					array of use cases, including
+					<a
+						href="http://trac.ffmpeg.org/wiki/StreamingGuide#Pointtopointstreaming"
+						target="_blank"
+						>point-to-point</a
+					>
+					streaming via TCP, allowing us to reduce the infrastructure required
+					to transmit the audiovisual data.
+				</p>
+				<p>
+					On the client side, we implemented the decoding of the video data
+					using FFmpeg’s libavformat and libavcodec libraries. Rendering the
+					video frames was tricky to figure out because pretty much all video
+					encoders store pixels in YCbCr colour space, which SDL isn’t the best
+					for.
+				</p>
+				<p>
+					The APIs of the libav* libraries are <b>huge</b>. Thankfully we only
+					really needed the
+					<a
+						href="https://ffmpeg.org/doxygen/trunk/group__lavc__encdec.html"
+						target="_blank"
+						>high level decoding API</a
+					>. The
+					<a
+						href="https://github.com/namndev/FFmpegTutorial/blob/master/learn-ffmpeg-libav-the-hard-way.md"
+						target="_blank"
+						>Learn FFmpeg libav the Hard Way</a
+					>
+					tutorial combined with the
+					<a
+						href="https://git.ffmpeg.org/gitweb/ffmpeg.git/tree/HEAD:/doc/examples"
+						target="_blank"
+						>examples</a
+					>
+					in the project's documentation also made things much easier.
+				</p>
 					<div class="paragraphs">
 						<h2>Setup and packup of the robot and operator station</h2>
 						<p>
@@ -94,25 +178,19 @@
 						<p>
 							We focused on making our robot compact, easily manufacturable and
 							well-rounded, with portable software so the same program can be
-							used with different single board computers. For image recognition,
-							we trained our own model based on the YoloV8 framework’s small
-							starting model. This reduces the processing power needed to do
-							inference, enabling less powerful hardware to be used (we
-							demonstrated this in the previous competition by using a 2 core 4
-							thread Thinkpad T410).
+							ported to different single board computers.
 						</p>
 					</div>
 					<div class="paragraphs">
 						<h2>What the team has learned so far</h2>
 						<ul>
 							<li>
-								We gained experience with Fusion360 and TinkerCAD and 3D
+								We gained experience with Fusion360, TinkerCAD and 3D
 								printing
 							</li>
 							<li>
 								<p>
-									Instead of Python, we opted for C for the core functionality
-									which enabled us to learn a lot about interacting with
+									Using C enabled us to learn a lot about interacting with
 									hardware at a lower level:
 								</p>
 
