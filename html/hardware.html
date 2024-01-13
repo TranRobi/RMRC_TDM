@@ -17,7 +17,7 @@
         </div>
         <ul>
           <li><a href="../index.html">Team</a></li>
-          <li><a href="KokanyBot.html">System description</a></li>
+          <li><a href="solutions.html">Solutions</a></li>
           <li>
             <a href="software.html ">Our Software</a>
           </li>
@@ -28,7 +28,53 @@
       </nav>
     </div>
     <div class="main-text">
+      <h1>Our Robot's Hardware</h1>
       <div class="content">
+	    <p>
+          Our robot’s body is entirely 3D printed, which makes it easier to
+          reproduce our work. The 3-layer plexiglass structure we used in
+          the previous year cost us a great deal, because it was difficult
+          to change batteries, therefor we opted for a box design.
+	    </p>
+        <p>
+          It uses a Raspberry Pi 4B+ as its onboard computer. There were no
+          issues with this single board computer in the previous year, aside
+          from some rather embarrassing software problems that we
+          detail elsewhere in our TDM. We initially planned on using the
+          new Raspberry Pi 5, however its lack of hardware video encoding,
+          availability and its newness in general were concerns for us,
+          while its improvements didn’t really matter for our case.
+        </p>
+        <p>
+          The Pi 5 promises much better performance, PCIe, two DSI camera
+          ports. None of our components use PCIe nor would they benefit from
+          them (I2C’s 100kbit/s speed is more than enough). The better
+          performance is always welcome, however the only code running on
+          our robot is a daemon that receives commands via a TCP connection
+          and controls our motors and arm (each command has been
+          <a
+            href="https://github.com/zsoltiv/kokanybot/blob/8a7fe3d6d123dfbd4f2134de911d977b6d5487fc/src/input.c#L30"
+            target="_blank"
+          >
+          squeezed into a single byte</a
+          >), and an
+          <a
+            href="https://github.com/zsoltiv/kokanybot/blob/master/kokanystream.sh"
+            target="_blank"
+          >
+          FFmpeg script</a
+          >
+          that captures from a webcam, transcodes the video using the Pi’s
+          hardware encoder and streams it over a TCP connection. The extra DSI
+          camera port is pretty much moot, we can simply use an USB webcam.
+        </p>
+        <p>
+          along with four DC motors, a battery pack housing three 18650
+          power supplies, an MCP23017 integrated circuit to provide extra
+          GPIO lines for stepper motors, a webcamera, and a 3D printed robot
+          arm. For motor control, we use an L298N integrated circuit. We use
+          an MQ-135-M smoke sensor for CO2 sensing.
+        </p>
         <table id="partlist">
           <tbody>
             <tr>
