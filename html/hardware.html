@@ -28,67 +28,71 @@
       </nav>
     </div>
     <div class="content">
-      <table>
+      <table id="partlist">
         <tbody>
-          <tr class="odd">
+          <tr>
             <td>Component</td>
             <td>Cost (in Euros)</td>
           </tr>
-          <tr class="even">
+          <tr>
             <td>Raspberry Pi 4B+</td>
             <td>71</td>
           </tr>
-          <tr class="odd">
-            <td>MCP23017</td>
-            <td>2.3</td>
+          <tr>
+            <td>2x MCP23017</td>
+            <td>4.1</td>
           </tr>
-          <tr class="even">
+          <tr>
+            <td>4x ULN2803A</td>
+            <td>1.93</td>
+          </tr>
+          <tr>
             <td>MQ-135-M</td>
             <td>2.1</td>
           </tr>
-          <tr class="odd">
+          <tr>
             <td>4x 12V DC motors</td>
-            <td>20.10</td>
+            <td>20.1</td>
           </tr>
-          <tr class="even">
-            <td>3x 3.7V 2000 18650 cells</td>
-            <td>14.07</td>
+          <tr>
+            <td>Parkside X20V Team</td>
+            <td>42.16</td>
           </tr>
-          <tr class="odd">
-            <td>8x 28BYJ-48</td>
-            <td>42.8</td>
+          <tr>
+            <td>6x 28BYJ-48</td>
+            <td>14.84</td>
           </tr>
-          <tr class="even">
-            <td>3 slot 18650 battery pack</td>
-            <td>5.02</td>
-          </tr>
-          <tr class="odd">
+          <tr>
             <td>12V DC step-down module</td>
             <td>1.56</td>
           </tr>
-          <tr class="even">
+          <tr>
             <td>Webcamera</td>
             <td>26.78</td>
           </tr>
-          <tr class="odd">
-            <td>3D prints, plexiglass</td>
-            <td>~60</td>
-          </tr>
-          <tr class="even">
-            <td>L298N-MOD</td>
-            <td>3.48</td>
-          </tr>
-          <tr class="odd">
-            <td>DIP28 IC socket</td>
-            <td>0.75</td>
-          </tr>
-          <tr class="even">
+          <tr>
             <td>2x LT-623</td>
             <td>4.23</td>
           </tr>
-          <tr class="odd">
+          <tr>
+            <td>1 pF SMD0805 capacitor</td>
+            <td>0.029</td>
+          </tr>
+          <tr>
+            <td>8x B5B-XH-A</td>
+            <td>1.29</td>
+          </tr>
+          <tr>
+            <td>PCB manufacturing + shipping</td>
+            <td>22.83</td>
+          </tr>
+          <tr>
+            <td>1kg PLA filament for 3D prints</td>
+            <td>19.75</td>
+          </tr>
+          <tr>
             <td>Overall cost of components</td>
-            <td>~254.19</td>
+            <td id="totalcost"></td>
           </tr>
         </tbody>
       </table>
@@ -98,5 +102,6 @@
     </div>
     <button id="click">Click me</button>
     <script type="module" src="../javascript/main.js"></script>
+    <script src="../javascript/totalcost.js"></script>
   </body>
 </html>
