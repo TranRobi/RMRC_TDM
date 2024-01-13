@@ -11,14 +11,12 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0000ff);
 //create a new camera with positions and angles
 const camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight,0.1,1000);
-//OrbitControls allow the camera to move around the scene
-let controls;
 //Instantiate a loader for the .gltf file
 const loader = new GLTFLoader();
 //Load the file
 const modelPaths = ['../models//scene1.gltf', '../models//scene2.gltf','../models//scene3.gltf', '../models//scene5.gltf','../models//scene6.gltf', '../models//scene7.gltf', '../models//scene8.gltf', '../models//scene9.gltf']; // Array to store all model paths
 const title = document.getElementById("titleFor3D");
-const titleList = ["Robotic Arm Base", "Robotic Arm Grabber Componets", "Robotic Arm Joint 1", "Robotic Arm Joint 2", "Robotic Arm Stepper holder","Robotic Arm in one peace", "Robot Base", "Stepper PCB"]
+const titleList = ["Robotic Arm Base", "Robotic Arm Grabber Components", "Robotic Arm Joint 1", "Robotic Arm Joint 2", "Robotic Arm Stepper Motor holder", "Robotic Arm in one piece", "Robot Frame", "Stepper Motor Control Board"]
 let currentPathIndex = 0; // index in the path array of the currently showing model
 let currentModel; // stores the model that is currently displaying
 loadModel(currentPathIndex);
@@ -57,7 +55,7 @@ const topLight = new THREE.HemisphereLight(0xffffff,0x000000, 2);
 scene.add(topLight);
 
 //This adds controls to the camera, so we can rotate / zoom it with the mouse
-controls = new OrbitControls(camera, renderer.domElement);
+let controls = new OrbitControls(camera, renderer.domElement);
 //Render the scene
 function animate() {
   requestAnimationFrame(animate);
