@@ -144,6 +144,33 @@
 					>
 					in the project's documentation also made things much easier.
 				</p>
+                <h2>
+                    Simplifying our software with device trees
+                </h2>
+                <p>
+                    last year we used a library called <a
+                        href="https://git.kernel.org/pub/scm/utils/i2c-tools/i2c-tools.git/about/">
+                        libi2c</a> to control some of our stepper motors using an external
+                    <a href="https://www.microchip.com/en-us/product/MCP23017">MCP23017 GPIO expander</a>.
+                    We wanted to make our software more flexible, and the best way to do this was ripping
+                    out the useless code and instead using the right tools for the job.
+                </p>
+                <p>
+                While programs are allowed to just use libi2c, it adds (often redundant) extra code to a project.
+                The Kernel actually has drivers for a lot of common ICs such as GPIO expanders, like the MCP23017 we use.
+                </p>
+                <p>
+                    One improvement we've made was deleting the I2C parts from our code, and instead
+                    using the <a href="https://elixir.bootlin.com/linux/latest/source/drivers/pinctrl/pinctrl-mcp23s08.c">kernel driver</a> instead.
+                    This is great because we no longer need separate code
+                    to use the GPIO expanders, since they're just <code>/dev/gpiochip</code>s now.
+                </p>
+                <p>
+                    To achieve this, we wrote a <a href="https://github.com/zsoltiv/kokanybot/blob/master/mcp23017.dts">device tree overlay</a>.
+                    Device tree overlays are kind of like patch files for
+                    <a href="https://www.kernel.org/doc/html/latest/devicetree/usage-model.html">device trees</a>. This file allows us to
+                    tell Linux what chips are available on which I2C addresses.
+                </p>
 					<div class="paragraphs">
 						<h2>Setup and packup of the robot and operator station</h2>
 						<p>
