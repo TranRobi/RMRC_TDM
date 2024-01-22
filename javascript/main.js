@@ -7,68 +7,91 @@ import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/l
 const btn = document.getElementById("click");
 //Create a Three.JS Scene
 const scene = new THREE.Scene();
-//Set the scene background
-scene.background = new THREE.Color(0x0000ff);
 //create a new camera with positions and angles
-const camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight,0.1,1000);
+const camera = new THREE.PerspectiveCamera(
+	75,
+	window.innerWidth / window.innerHeight,
+	0.1,
+	1000
+);
 //Instantiate a loader for the .gltf file
 const loader = new GLTFLoader();
 //Load the file
-const modelPaths = ['../models//scene1.gltf', '../models//scene2.gltf','../models//scene3.gltf', '../models//scene5.gltf','../models//scene6.gltf', '../models//scene7.gltf', '../models//scene8.gltf', '../models//scene9.gltf']; // Array to store all model paths
+const modelPaths = [
+	"../models//scene1.gltf",
+	"../models//scene2.gltf",
+	"../models//scene3.gltf",
+	"../models//scene5.gltf",
+	"../models//scene6.gltf",
+	"../models//scene7.gltf",
+	"../models//scene8.gltf",
+	"../models//scene9.gltf",
+]; // Array to store all model paths
 const title = document.getElementById("titleFor3D");
-const titleList = ["Robotic Arm Base", "Robotic Arm Grabber Components", "Robotic Arm Joint 1", "Robotic Arm Joint 2", "Robotic Arm Stepper Motor holder", "Robotic Arm in one piece", "Robot Frame", "Stepper Motor Control Board"]
+const titleList = [
+	"Robotic Arm Base",
+	"Robotic Arm Grabber Components",
+	"Robotic Arm Joint 1",
+	"Robotic Arm Joint 2",
+	"Robotic Arm Stepper Motor holder",
+	"Robotic Arm in one piece",
+	"Robot Frame",
+	"Stepper Motor Control Board",
+];
 let currentPathIndex = 0; // index in the path array of the currently showing model
 let currentModel; // stores the model that is currently displaying
 loadModel(currentPathIndex);
 console.log(modelPaths[0]);
-function loadModel(index){
-	if(currentModel){
+function loadModel(index) {
+	if (currentModel) {
 		scene.remove(currentModel); //remove the current model
 	}
-  title.innerHTML = titleList[index]
+	title.innerHTML = titleList[index];
 	loader.load(`${modelPaths[index]}`, function (gltf) {
-    currentModel = gltf.scene
-    scene.add(currentModel)
-  } );
+		currentModel = gltf.scene;
+		scene.add(currentModel);
+	});
 }
 
-function next(){
-  if(currentPathIndex < modelPaths.length-1){
-    currentPathIndex ++;
-  }else{
-    currentPathIndex = 0;
-  }
-  loadModel(currentPathIndex);
+function next() {
+	if (currentPathIndex < modelPaths.length - 1) {
+		currentPathIndex++;
+	} else {
+		currentPathIndex = 0;
+	}
+	loadModel(currentPathIndex);
 }
 
 btn.addEventListener("click", () => {
-  next()
-})
+	next();
+});
 //Instantiate a new renderer and set its size
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({
+	alpha: true,
+});
 renderer.setSize(window.innerWidth / 3, window.innerHeight / 3);
 //Add the renderer to the DOM
 document.getElementById("container3D").appendChild(renderer.domElement);
 camera.position.z = 300;
 //Add lights to the scene, so we can actually see the 3D model
-const topLight = new THREE.HemisphereLight(0xffffff,0x000000, 2); 
+const topLight = new THREE.HemisphereLight(0xffffff, 0x000000, 2);
 scene.add(topLight);
 
 //This adds controls to the camera, so we can rotate / zoom it with the mouse
 let controls = new OrbitControls(camera, renderer.domElement);
 //Render the scene
 function animate() {
-  requestAnimationFrame(animate);
-  renderer.render(scene, camera);
+	requestAnimationFrame(animate);
+	renderer.render(scene, camera);
 }
 function resizeRender() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth / 3, window.innerHeight / 3);
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+	renderer.setSize(window.innerWidth / 3, window.innerHeight / 3);
 }
 //Add a listener to the window, so we can resize the window and the camera
 window.addEventListener("resize", function () {
-  resizeRender();
+	resizeRender();
 });
 
 //Start the 3D rendering
