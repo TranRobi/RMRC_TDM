@@ -190,6 +190,12 @@ a:hover {
 	background-color: #69491a;
 	color: #f2ab39;
 }
+.ch-h2-title {
+	text-align: center;
+}
+.hunComp {
+	margin-top: 2rem;
+}
 
 @media only screen and (max-width: 768px) {
 	.row {
