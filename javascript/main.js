@@ -18,25 +18,11 @@ const camera = new THREE.PerspectiveCamera(
 const loader = new GLTFLoader();
 //Load the file
 const modelPaths = [
-	"../models//scene1.gltf",
-	"../models//scene2.gltf",
-	"../models//scene3.gltf",
-	"../models//scene5.gltf",
-	"../models//scene6.gltf",
-	"../models//scene7.gltf",
-	"../models//scene8.gltf",
-	"../models//scene9.gltf",
+	"../models//scene1.gltf"
 ]; // Array to store all model paths
 const title = document.getElementById("titleFor3D");
 const titleList = [
-	"Robotic Arm Base",
-	"Robotic Arm Grabber Components",
-	"Robotic Arm Joint 1",
-	"Robotic Arm Joint 2",
-	"Robotic Arm Stepper Motor holder",
-	"Robotic Arm in one piece",
-	"Robot Frame",
-	"Stepper Motor Control Board",
+	"Robot wheel 3D model"
 ];
 let currentPathIndex = 0; // index in the path array of the currently showing model
 let currentModel; // stores the model that is currently displaying
