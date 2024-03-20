@@ -1,173 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../css/style.css" />
-    <title>Kókány Corporations</title>
-  </head>
-  <body>
-    <div>
-      <nav>
-        <div class="logo">
-          <div class="img">
-            <img src="/img/kc-logov2.png" alt="logo" class="avatar log" />
-          </div>
-          <h1>Kókány Corporations</h1>
-        </div>
-        <ul>
-          <li><a href="../index.html">Team</a></li>
-          <li>
-            <a href="software.html ">Our Software</a>
-          </li>
-          <li>
-            <a href="hardware.html" class="active">Our Hardware</a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-    <div class="main-text">
-      <h1>Our Robot's Hardware</h1>
-      <div class="content">
-	    <p>
-          Our robot’s body is entirely 3D printed, which makes it easier to
-          reproduce our work. The 3-layer plexiglass structure we used in
-          the previous year cost us a great deal, because it was difficult
-          to change batteries, therefor we opted for a box design.
-	    </p>
-        <p>
-          It uses a Raspberry Pi 4B+ as its onboard computer. There were no
-          issues with this single board computer in the previous year, aside
-          from some rather embarrassing software problems that we
-          detail elsewhere in our TDM. We initially planned on using the
-          new Raspberry Pi 5, however its lack of hardware video encoding,
-          availability and its newness in general were concerns for us,
-          while its improvements didn’t really matter for our case.
-        </p>
-        <p>
-          The Pi 5 promises much better performance, PCIe, two DSI camera
-          ports. None of our components use PCIe nor would they benefit from
-          them (I2C’s 100kbit/s speed is more than enough). The better
-          performance is always welcome, however the only code running on
-          our robot is a daemon that receives commands via a TCP connection
-          and controls our motors and arm (each command has been
-          <a
-            href="https://github.com/zsoltiv/kokanybot/blob/8a7fe3d6d123dfbd4f2134de911d977b6d5487fc/src/input.c#L30"
-            target="_blank"
-          >
-          squeezed into a single byte</a
-          >), and an
-          <a
-            href="https://github.com/zsoltiv/kokanybot/blob/master/kokanystream.sh"
-            target="_blank"
-          >
-          FFmpeg script</a
-          >
-          that captures from a webcam, transcodes the video using the Pi’s
-          hardware encoder and streams it over a TCP connection. The extra DSI
-          camera port is pretty much moot, we can simply use an USB webcam.
-        </p>
-        <p>
-          along with four DC motors, a battery pack housing three 18650
-          power supplies, an MCP23017 integrated circuit to provide extra
-          GPIO lines for stepper motors, a webcamera, and a 3D printed robot
-          arm. For motor control, we use an L298N integrated circuit. We use
-          an MQ-135-M smoke sensor for CO2 sensing.
-        </p>
-        <table id="partlist">
-          <tbody>
-            <tr>
-              <th>Component</th>
-              <th>Cost (in Euros)</th>
-            </tr>
-            <tr>
-              <td>Raspberry Pi 4B+</td>
-              <td>71</td>
-            </tr>
-            <tr>
-              <td>4x JGA25-370 12V 60rpm</td>
-              <td>34.58</td>
-            </tr>
-            <tr>
-              <td>Parkside X20V Drill Battery</td>
-              <td>42.16</td>
-            </tr>
-            <tr>
-              <td>DCDC-6010-M, DC/DC step-down, max. 60V, max. 10A</td>
-              <td>17</td>
-            </tr>
-            <tr>
-              <td>Webcamera</td>
-              <td>26.78</td>
-            </tr>
-            <tr>
-              <td>2x LT-623</td>
-              <td>4.23</td>
-            </tr>
-            <tr>
-              <td>2kg PLA filament for 3D prints</td>
-              <td>40.5</td>
-            </tr>
-            <tr>
-              <td>4x Tower Pro MG995</td>
-              <td>32</td>
-            </tr>
-            <tr>
-              <td>Adafruit PCA9685 servo controller </td>
-              <td>13,77</td>
-            </tr>
-            <tr>
-              <td>6-24V 12V/24V to 5V 3A CAR USB Charger Modul</td>
-              <td>3</td>
-            </tr>
-            <tr>
-              <td>AX SS HYRAX crawler tire 120mm diameter 4pc pack</td>
-              <td>30,52</td>
-            </tr>
-            <tr>
-              <td>Overall cost of components</td>
-              <td id="totalcost"></td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="baseDescription">
-          <h1>The frame of the robot</h1>
-          <p>
-            Designed by Máté Mester. The whole base is made out of PETG. The body itself looks like a box. 
-            It holds and give place to a Raspberry Pi 4, a custom PCB, 2 different buck converters. 
-            The motor holders are designed to fit in the box itself. The shafts of the DC motors that 
-            we use are supported by the casing of the robot so the hard terrain won’t affect the motor. 
-            We control the motors with a MotoZero. The robot is powered by a Parkside 20V X20 drill battery. 
-            The holder for the battery is a 3D printed case. The robot arm and the motors run on 12V and the 
-            raspberry runs on 5V that’s why we use one converter to get down to 12V from 20V and another one to convert it down to 5V.
-          </p>
-          <h1>Custom 3D printed robot arm</h1>
-          <p>
-            Designed by Tran Duy Dat. The robot arm uses 6 12V 28BYJ-48 stepper motors. The previous arm that we used wasn’t strong enough. 
-            This time we plan to print the arm out of PETG. On paper the 12V 28BYJ-48 steppers can hold 4,5kg each and the previous steppers 
-            are only capable of holding 2,5kg. The arm itself will be mounted on the top of our robot. The arm can rotate which means we can 
-            reach out to the left and right. It’s able to rotate in 360-degrees, and it is more than we need but it’s a good feature. 
-          </p>
-        </div>
-        <h1>Our 3D models</h1>
-        <p>Hold down left click to rotate the object, zoom in and out with the middle wheel on the mouse, hold down right click to drag around</p>
-        <div id="container3D" class="models">
-          <h4 id="titleFor3D"></h2>
-          <h4>
-            <a href="https://github.com/TranRobi/Kokanybot-Robot-3Dmodels" target="_blank">Gihub link for the parts of our robot</a>
-          </h4>
-          </div>
-          <button id="click">Check Next Object</button>
-        </div>
-        <div class="paragraphs">
-          <h2>Strengths and real-life applications</h2>
-          <p>
-            We focused on making our robot compact, easily manufacturable and
-            well-rounded, with portable software so the same program can be
-            ported to different single board computers.
-          </p>
-        </div>
-        <div class="paragraphs">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<title>Kókány Corporations</title>
+	</head>
+	<body>
+		<div>
+			<nav>
+				<div class="logo">
+					<div class="img">
+						<img src="/img/kc-logov2.png" alt="logo" class="avatar log" />
+					</div>
+					<h1>Kókány Corporations</h1>
+				</div>
+				<ul>
+					<li><a href="../index.html">Team</a></li>
+					<li>
+						<a href="software.html ">Our Software</a>
+					</li>
+					<li>
+						<a href="hardware.html" class="active">Our Hardware</a>
+					</li>
+					<li>
+						<a href="attempts.html">Attempts</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+		<div class="main-text">
+			<h1>Our Robot's Hardware</h1>
+			<div class="content">
+				<p>
+					Our robot’s body is entirely 3D printed, which makes it easier to
+					reproduce our work. The 3-layer plexiglass structure we used in the
+					previous year cost us a great deal, because it was difficult to change
+					batteries, therefor we opted for a box design.
+				</p>
+				<p>
+					It uses a Raspberry Pi 4B+ as its onboard computer. There were no
+					issues with this single board computer in the previous year, aside
+					from some rather embarrassing software problems that we detail
+					elsewhere in our TDM. We initially planned on using the new Raspberry
+					Pi 5, however its lack of hardware video encoding, availability and
+					its newness in general were concerns for us, while its improvements
+					didn’t really matter for our case.
+				</p>
+				<p>
+					The Pi 5 promises much better performance, PCIe, two DSI camera ports.
+					None of our components use PCIe nor would they benefit from them
+					(I2C’s 100kbit/s speed is more than enough). The better performance is
+					always welcome, however the only code running on our robot is a daemon
+					that receives commands via a TCP connection and controls our motors
+					and arm (each command has been
+					<a
+						href="https://github.com/zsoltiv/kokanybot/blob/8a7fe3d6d123dfbd4f2134de911d977b6d5487fc/src/input.c#L30"
+						target="_blank"
+					>
+						squeezed into a single byte</a
+					>), and an
+					<a
+						href="https://github.com/zsoltiv/kokanybot/blob/master/kokanystream.sh"
+						target="_blank"
+					>
+						FFmpeg script</a
+					>
+					that captures from a webcam, transcodes the video using the Pi’s
+					hardware encoder and streams it over a TCP connection. The extra DSI
+					camera port is pretty much moot, we can simply use an USB webcam.
+				</p>
+				<p>
+					along with four DC motors, a battery pack housing three 18650 power
+					supplies, an MCP23017 integrated circuit to provide extra GPIO lines
+					for stepper motors, a webcamera, and a 3D printed robot arm. For motor
+					control, we use an L298N integrated circuit. We use an MQ-135-M smoke
+					sensor for CO2 sensing.
+				</p>
+				<table id="partlist">
+					<tbody>
+						<tr>
+							<th>Component</th>
+							<th>Cost (in Euros)</th>
+						</tr>
+						<tr>
+							<td>Raspberry Pi 4B+</td>
+							<td>71</td>
+						</tr>
+						<tr>
+							<td>4x JGA25-370 12V 60rpm</td>
+							<td>34.58</td>
+						</tr>
+						<tr>
+							<td>Parkside X20V Drill Battery</td>
+							<td>42.16</td>
+						</tr>
+						<tr>
+							<td>DCDC-6010-M, DC/DC step-down, max. 60V, max. 10A</td>
+							<td>17</td>
+						</tr>
+						<tr>
+							<td>Webcamera</td>
+							<td>26.78</td>
+						</tr>
+						<tr>
+							<td>2x LT-623</td>
+							<td>4.23</td>
+						</tr>
+						<tr>
+							<td>2kg PLA filament for 3D prints</td>
+							<td>40.5</td>
+						</tr>
+						<tr>
+							<td>4x Tower Pro MG995</td>
+							<td>32</td>
+						</tr>
+						<tr>
+							<td>Adafruit PCA9685 servo controller</td>
+							<td>13,77</td>
+						</tr>
+						<tr>
+							<td>6-24V 12V/24V to 5V 3A CAR USB Charger Modul</td>
+							<td>3</td>
+						</tr>
+						<tr>
+							<td>AX SS HYRAX crawler tire 120mm diameter 4pc pack</td>
+							<td>30,52</td>
+						</tr>
+						<tr>
+							<td>Overall cost of components</td>
+							<td id="totalcost"></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="baseDescription">
+					<h1>The frame of the robot</h1>
+					<p>
+						The whole frame is made out of PETG. The body itself looks like a
+						box. It holds and give place to a Raspberry Pi 4, Adafruit PCA9685,
+						3 different buck converters. The motor holders are designed to fit
+						in the box itself. The shafts of the DC motors that we use are
+						supported by the casing of the robot so the hard terrain won’t
+						affect the motor. We control the motors with a MotoZero with a heat
+						sink which prevents the driver from overheating. The robot is
+						powered by a Parkside 20V X20 drill battery. The holder for the
+						battery is a 3D printed case. The motors run on 12V and the
+						raspberry and robot arm runs on 5V that’s why we use one converter
+						to get down to 12V from 20V and another one to convert it down to
+						5V.
+					</p>
+					<h1>Robot arm</h1>
+					<p>
+						The robot arm itself contains 4 Tower pro MG955 servos and they're
+						controlled by the Adafruit PCA9685 PWM controller. The gripper is 3D
+						printed and the creadit goes to:
+						<a href="https://www.thingiverse.com/thing:2661755"
+							>Click here to view model</a
+						>.
+            
+					</p>
+				</div>
+				<div class="paragraphs">
+					<h2>Strengths and real-life applications</h2>
+					<p>
+						We focused on making our robot compact, easily manufacturable and
+						well-rounded, with portable software so the same program can be
+						ported to different single board computers.
+					</p>
+				</div>
+				<div class="paragraphs">
 					<h2>What the team has learned so far</h2>
 					<ul>
 						<li>
@@ -178,7 +179,6 @@
 								Using C enabled us to learn a lot about interacting with
 								hardware at a lower level:
 							</p>
-
 							<ul>
 								<li>Using standard Linux APIs</li>
 								<li>Using I2C to communicate with integrated circuits</li>
@@ -195,8 +195,9 @@
 						</li>
 					</ul>
 				</div>
-    </div>
-    <script type="module" src="../javascript/main.js"></script>
-    <script src="../javascript/totalcost.js"></script>
-  </body>
+			</div>
+			<script type="module" src="../javascript/main.js"></script>
+			<script src="../javascript/totalcost.js"></script>
+		</div>
+	</body>
 </html>
