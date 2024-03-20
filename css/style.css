@@ -197,6 +197,10 @@ a:hover {
 	margin-top: 2rem;
 }
 
+#partlist td {
+	color: bisque;
+}
+
 @media only screen and (max-width: 768px) {
 	.row {
 		display: block;
