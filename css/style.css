@@ -44,7 +44,7 @@ nav a {
 nav ul {
 	display: flex;
 	margin: 5px;
-	width: 25%;
+	width: 15%;
 	justify-content: space-between;
 	flex-direction: row;
 }
@@ -114,7 +114,7 @@ nav li {
 	height: 400px;
 	overflow: auto;
 	padding: 15px;
-	border-radius: 20%;
+	border-radius: 5%;
 	text-align: center;
 }
 
@@ -124,12 +124,6 @@ nav li {
 
 li {
 	text-decoration: none;
-}
-
-.models {
-	width: fit-content;
-	height: fit-content;
-	margin-top: 20px;
 }
 .main-text {
 	margin: auto;
@@ -190,6 +184,7 @@ a:hover {
 	background-color: #69491a;
 	color: #f2ab39;
 }
+
 .ch-h2-title {
 	text-align: center;
 }
@@ -202,11 +197,18 @@ a:hover {
 }
 
 @media only screen and (max-width: 768px) {
+	nav {
+		display: block;
+	}
 	.row {
 		display: block;
 	}
 	.member {
 		margin-top: 2rem;
+		width: fit-content;
+	}
+	.intro {
+		width: 100%;
 	}
 	nav h1 {
 		font-size: 15px;
@@ -220,10 +222,14 @@ a:hover {
 		margin: 0px;
 	}
 	.logo {
-		display: block;
+		display: flex;
+		flex-direction: row;
+		justify-content: left;
+		margin: auto;
+		width: fit-content;
 	}
 	.img {
-		margin: auto;
+		align-self: center;
 	}
 	.main-text {
 		width: 100%;
@@ -232,7 +238,9 @@ a:hover {
 		padding: 0px;
 	}
 	nav ul {
-		flex-flow: column wrap;
+		display: flex;
 		justify-content: space-between;
+		margin: auto;
+		width: 85%;
 	}
 }
