@@ -54,14 +54,14 @@
 					KókányControl has a graphical interface for displaying the video and
 					the sensor data it receives from Kókánybot. It takes keyboard input,
 					and sends commands to the Raspberry Pi. It also recognizes QR codes
-					that appear on Kókánybot’s camera.
+					that appear on Kókánybot’s cameras.
 				</p>
 				<p>
 					KókányRecognize was written to reduce the complexity of KókányControl,
 					since image recognition functionality is only needed in a few runs,
 					and we can just launch KókányRecognize whenever we need it. This also
 					enabled us to build KókányControl in pure C, since we would have
-					needed to use C++ to build the image recognition bits (which usestl"
+					needed to use C++ to build the image recognition bits (which uses
 					OpenCV).
 				</p>
 				<p>The robot can be controlled via WiFi (2.4Ghz) or Ethernet.</p>
@@ -184,7 +184,7 @@
 				<p>
 					To achieve this, we wrote a
 					<a
-						href="https://github.com/zsoltiv/kokanybot/blob/master/kokanyservoctl.dts"
+						href="https://github.com/zsoltiv/kokanybot/blob/master/overlays/kokanyservoctl.dts"
 						>device tree overlay</a
 					>. Device tree overlays are kind of like patch files for
 					<a
@@ -193,6 +193,56 @@
 					>. This file allows us to tell Linux what chips are available on certain
 					I2C addresses.
 				</p>
+				<h2>Video and audio streaming</h2>
+				<p>
+					During tests, operators are only allowed to see the arenas from their
+					robot’s point of view. This meant we needed a way to find a way to
+					display the video data from the robot’s cameras.
+				</p>
+                <p>
+                    We've learnt from our mistakes last year, and have opted for using multiple cameras so
+                    that we have better peripheral vision while controlling Kókánybot.
+                </p>
+				<p>
+					Multimedia related tasks are surprisingly computation heavy when one
+					is working with embedded systems. The CPU in the Raspberry Pi 4B+ is
+					fairly capable, however we also had to consider power draw and thermal
+					related problems. We considered several video formats: H.265, AV1 and
+					H.264, but in the end we settled on using raw frames from our cameras
+                    to minimize latency as much as possible, since at the 2023 RoboCup,
+                    our camera's high latency has caused a lot of trouble.
+				</p>
+                <p>
+                    One of our cameras is currently a
+                    <a href="https://www.raspberrypi.com/documentation/accessories/camera.html">Raspberry Pi Official Camera Module</a>.
+                    This uses the new and improved libcamera stack which does not play well with regular
+                    V4L2 programs—such as FFmpeg—hence we wrote a
+                    <a href="https://github.com/zsoltiv/kokanybot/blob/master/kokanystream-front.sh">modified script</a> to work with the Pi Camera.
+                </p>
+                <h2>libhwpwm</h2>
+                <p>
+                    As we've stated above, one of our main goals was to reduce the number of barely working
+                    DIY solutions, and rely on what's tried and tested: The kernel drivers. To that end, we
+                    did not want to bring back our
+                    <a href="https://github.com/zsoltiv/kokanybot/blob/mirk2023/src/pca9685.c">old PCA9685 driver</a>.
+                </p>
+                <p>
+                    There was an issue however: There was no thin, low-level C library for poking
+                    the sysfs PWM files safely (or at least as safely as C code can). As it's written in
+                    the <a href="https://zorleone.xyz/posts/announcing-libhwpwm/">libhwpwm announcement</a>,
+                    the <a href="https://github.com/zeroping/sysfspwm">existing solutions</a> were too complex for our taste,
+                    so contrary to what we set out to do, <a href="https://github.com/zsoltiv/libhwpwm">we rolled our own solution</a>.
+                </p>
+                <p>
+                    The implementation is really simple as the library only needs to poke ~8 or so files in total.
+                    The library has been
+                    <a href="https://github.com/zsoltiv/libhwpwm/commit/6d2fea4250a91d9d32f8358b7282dce7be7fb308">rewritten entirely</a>
+                    when we uncovered the troubles that holding onto critical file descriptors—sysfs files—cause.
+                </p>
+                <p>
+                    We've also encountered a rather <a href="https://forums.raspberrypi.com/viewtopic.php?t=287015">exotic bug in the
+                    Raspberry Pi and the camera modules</a>, so we will reconsider using those modules.
+                </p>
 				<h2>Setup and packup of the robot and operator station</h2>
 				<p>
 					To set up the robot, we slide a battery into our battery holder,
@@ -206,21 +256,6 @@
 				<p>
 					We use standard, easily acquirable parts, which makes our robot truly
 					rapidly manufacturable.
-				</p>
-				<h2>Video and audio streaming</h2>
-				<p>
-					During tests, operators are only allowed to see the arenas from their
-					robot’s point of view. This meant we needed a way to find a way to
-					display the video data from the robot’s camera.
-				</p>
-				<p>
-					Multimedia related tasks are surprisingly computation heavy when one
-					is working with embedded systems. The CPU in the Raspberry Pi 4B+ is
-					fairly capable, however we also had to consider power draw and thermal
-					related problems. We considered several video formats: H.265, AV1 and
-					H.264, but in the end we settled on using raw frames from our cameras
-                    to minimize latency as much as possible, since at the 2023 RoboCup,
-                    our camera's high latency has caused a lot of trouble.
 				</p>
 				<h2>Experiments and Testing</h2>
 				<p>
@@ -338,6 +373,14 @@
                                     Linux PWM userspace API
                                 </a>
                             </td>
+						</tr>
+						<tr class="odd">
+							<td>
+								<a href="https://github.com/raspberrypi/rpicam-apps" target="_blank">
+									rpicam-apps
+								</a>
+							</td>
+							<td>The programs used to capture the Pi Camera's video data</td>
 						</tr>
 					</tbody>
 				</table>
