@@ -47,10 +47,10 @@
 			<div class="content">
 				<p>All the 3D printed parts are available on the <a href="attempts.html">Visit Site</a></p>
 				<p>
-					Our robot’s body is entirely 3D printed, which makes it easier to
+					Our robot’s body is 3D printed and made of laser cut plexiglass, which makes it easier to
 					reproduce our work. The 3-layer plexiglass structure we used in the
 					previous year cost us a great deal, because it was difficult to change
-					batteries, therefor we opted for a box design.
+					batteries, and also made the robot too tall, therefore we opted for a box design.
 				</p>
 				<p>
 					It uses a Raspberry Pi 4B+ as its onboard computer. There were no
@@ -85,10 +85,10 @@
 					camera port is pretty much moot, we can simply use an USB webcam.
 				</p>
 				<p>
-					along with four DC motors, a battery pack housing three 18650 power
-					supplies, an MCP23017 integrated circuit to provide extra GPIO lines
-					for stepper motors, a webcamera, and a 3D printed robot arm. For motor
-					control, we use an L298N integrated circuit. We use an MQ-135-M smoke
+					The robot uses four DC motors for moving, a 20V drill battery as power supply.
+					We designed a custom pcb for a stepper robot arm, but there were many issues with it
+					so we use servo motors for the arm, a webcamera, and a metal robot arm. For motor
+					control, we use a MotoZero. We use an MQ-135-M smoke
 					sensor for CO2 sensing.
 				</p>
 				<table id="partlist">
@@ -150,13 +150,16 @@
 				<div class="baseDescription">
 					<h1>The frame of the robot</h1>
 					<p>
-						The whole frame is made out of PETG. The body itself looks like a
-						box. It holds and give place to a Raspberry Pi 4, Adafruit PCA9685,
-						3 different buck converters. The motor holders are designed to fit
-						in the box itself. The shafts of the DC motors that we use are
+						The frame of the robot is made of a 3d printed box with a lasercut plexiglass top. 
+						The body holds and give place to a Raspberry Pi 4, Adafruit PCA9685,
+						and 2 buck converters for stepping down the voltage for different components. 
+						The motor holders are designed to fit
+						in the box itself, because we wanted to make the robot's center of gravity 
+						as low as possible. The shafts of the DC motors that we use are
 						supported by the casing of the robot so the hard terrain won’t
 						affect the motor. We control the motors with a MotoZero with a heat
-						sink which prevents the driver from overheating. The robot is
+						sink which prevents the driver from overheating. We've also put a 
+						40mm fan on the robot to make sure that nothing will overheat. The robot is
 						powered by a Parkside 20V X20 drill battery. The holder for the
 						battery is a 3D printed case. The motors run on 12V and the
 						raspberry and robot arm runs on 5V that’s why we use one converter
@@ -165,12 +168,36 @@
 					</p>
 					<h1>Robot arm</h1>
 					<p>
+<<<<<<< HEAD
 						The robot arm itself contains 4 Tower pro MG955 servos and they're
 						controlled by the Adafruit PCA9685 PWM controller. The gripper is 3D
 						printed and the creadit goes to:
 						<a href="https://www.thingiverse.com/thing:2661755" target="_blank"
+=======
+						The robot arm itself contains 4 Tower pro MG996R servos. At first we 
+						used 3D printed parts for the arm, but we had several issues with it. 
+						First the plastic melted, which was mainly our fault, because we gave 
+						the motors higher voltage than it was inteded. Then our second issue 
+						with 3D printed parts was the attachment of the motors. It broke very
+						quickly so we decided to use metal parts in order to make sure that it
+						won't break. The motors are controlled by an Adafruit PCA9685 PWM 
+						controller. It doesn't take up much space so much more efficient than our
+						previous stepper motor controllers. The gripper of the arm is 3D
+						printed, but we are planning on changing it to metal as well. The credit 
+						of the grabber goes to:
+						<a href="https://www.thingiverse.com/thing:2661755"
+>>>>>>> b1a45c6 (hardware updates (wheels, arm))
 							>Click here to view model</a
 						>.
+					</p>
+					<h1>Wheels</h1>
+					<p>
+						We ordered 4 tires online but it was cheaper to 3d print the rims, so 
+						we designed it using CAD softwares. We 3D printed the rims and the motors' 
+						drives in one piece. The first problem occurred when the wheel broke at the 
+						base of the motor drive. So far we designed and made 4 different designs for 
+						the wheel. The current idea is to use metal and make a custom CNC motor drive. 
+						
 					</p>
 				</div>
 				<h2>Strengths and real-life applications</h2>
@@ -184,6 +211,9 @@
 					<ul>
 						<li>
 							We gained experience with Fusion360, TinkerCAD and 3D printing
+						</li>
+						<li>
+							We learned about designing and assembling custom PCBs.
 						</li>
 						<li>
 							<p>
