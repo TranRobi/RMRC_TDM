@@ -7,7 +7,7 @@
 		<link
 			rel="stylesheet"
 			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
-		/>
+            />
 		<link rel="stylesheet" href="../css/style.css" />
 		<title>Kókány Corporations</title>
 	</head>
@@ -45,6 +45,11 @@
 		<div class="member-border">
 			<div class="content">
 				<h1>Our Software</h1>
+                <p>
+                    This page details some aspects of Kókánybot's software stack,
+                    and goes into greater detail regarding some changes made since
+                    <a href="http://2023.robocup.org/en/home/">the previous year</a>.
+                </p>
 				<h2>Communication</h2>
 				<p>
 					We interact with our robot using a few custom programs, named
@@ -193,6 +198,41 @@
 					>. This file allows us to tell Linux what chips are available on certain
 					I2C addresses.
 				</p>
+                <h2>Switching from TCP to UDP</h2>
+                <p>
+                    Robotics taught us just how fragile computers are when subjected to harsher environments.
+                    Short circuits may occur, components might get knocked against a robot's frame, boards can overheat,
+                    all of which can result in a robot rebooting or shutting down entirely.
+                </p>
+                <p>
+                    In our previous competitions, we have <i>always</i> had faults like this occur. If things were going too well,
+                    then our UTP cable slipped out of our control station's Ethernet port. In these cases, we almost always had to
+                    reboot our robot and do the software side of the setup again, wasting precious time.
+                </p>
+                <p>
+                    In an attempt to mitigate these issues issues while sticking with TCP sockets would mean having
+                    to handle dozens of possible states, many of which might only occur during the actual competition.
+                    Instead of doing that, we've been making steady progress to switch over to UDP,
+                    which is a different communications protocol. As of now, the code which receives keyboard
+                    input uses no TCP sockets, it's all stateless.
+                </p>
+                <p>
+                    The main advantage of UDP compared to TCP is its statelessness: networked programs do not need to
+                    <code>connect()</code> or <code>listen()</code> nor <code>accept()</code>; you create a socket, and
+                    send/receive data over it using <code>sendto()</code> and <code>recvfrom()</code>.
+                    This eliminates the need for handling reconnections.
+                </p>
+                <p>
+                    The main downsides of UDP are that it does not guarantee data packets arriving in the correct order
+                    nor does it guarantee that they arrive <i>at all</i>. This is not really an issue for us,
+                    since the entire network is point-to-point with no more than two hosts, and we have yet to experience
+                    any problems.
+                </p>
+                <h2>Removing gas sensing code</h2>
+                <p>
+                    The rulebook's <a href="https://oarkit.intelligentrobots.org/home/wp-content/uploads/2023/10/RoboCupRescue-RMRC-2024-Rulebook-working-draft-2023-10-15.pdf">latest draft</a> does not mention CO<sub>2</sub> sensing, therefore we've removed all code related to it. If a later draft brings it back,
+                    we can just reuse a previous commit, as we've often done during development.
+                </p>
 				<h2>Video and audio streaming</h2>
 				<p>
 					During tests, operators are only allowed to see the arenas from their
@@ -231,7 +271,8 @@
                     the sysfs PWM files safely (or at least as safely as C code can). As it's written in
                     the <a href="https://zorleone.xyz/posts/announcing-libhwpwm/">libhwpwm announcement</a>,
                     the <a href="https://github.com/zeroping/sysfspwm">existing solutions</a> were too complex for our taste,
-                    so contrary to what we set out to do, <a href="https://github.com/zsoltiv/libhwpwm">we rolled our own solution</a>.
+                    so contrary to what we set out to do, <a href="https://github.com/zsoltiv/libhwpwm">we rolled our own solution</a>,
+                    but the result is less hacky than the aforementioned old PWM code.
                 </p>
                 <p>
                     The implementation is really simple as the library only needs to poke ~8 or so files in total.
