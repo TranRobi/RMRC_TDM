@@ -207,20 +207,20 @@
                 <p>
                     In our previous competitions, we have <i>always</i> had faults like this occur. If things were going too well,
                     then our UTP cable slipped out of our control station's Ethernet port. In these cases, we almost always had to
-                    reboot our robot and do the software side of the setup again, wasting precious time.
+                    reboot our robot and do the software side of the setup again and then reconnect, wasting precious time.
                 </p>
                 <p>
-                    In an attempt to mitigate these issues issues while sticking with TCP sockets would mean having
-                    to handle dozens of possible states, many of which might only occur during the actual competition.
+                    Mitigating these issues while sticking with TCP sockets would mean having
+                    to handle potential connection issues every time we send/receive data.
                     Instead of doing that, we've been making steady progress to switch over to UDP,
-                    which is a different communications protocol. As of now, the code which receives keyboard
-                    input uses no TCP sockets, it's all stateless.
+                    which is a different communications protocol. As of now, the code which
+                    receives keyboard input uses no TCP sockets, it's all stateless.
                 </p>
                 <p>
                     The main advantage of UDP compared to TCP is its statelessness: networked programs do not need to
-                    <code>connect()</code> or <code>listen()</code> nor <code>accept()</code>; you create a socket, and
-                    send/receive data over it using <code>sendto()</code> and <code>recvfrom()</code>.
-                    This eliminates the need for handling reconnections.
+                    <code>connect()</code>, <code>listen()</code> nor <code>accept()</code>, which also means no need to
+                    track clients; you create a socket, and send/receive data over it using <code>sendto()</code> and
+                    <code>recvfrom()</code>. This eliminates the need for handling reconnections.
                 </p>
                 <p>
                     The main downsides of UDP are that it does not guarantee data packets arriving in the correct order
