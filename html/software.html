@@ -50,6 +50,20 @@
                     and goes into greater detail regarding some changes made since
                     <a href="http://2023.robocup.org/en/home/">the previous year</a>.
                 </p>
+                <p>
+                    Kókánybot's software stack is written in a mix of Python (the object detection bits)
+                    and C (everything else).
+                </p>
+                <h2>The backend</h2>
+                <p>
+                    There are a few daemons running on Kókánybot's main computer, a Raspberry Pi 4B:
+                    A few FFmpeg scripts for streaming video (for the
+                    <a href="https://github.com/zsoltiv/kokanybot/blob/master/kokanystream-front.sh">front</a>
+                    and <a href="https://github.com/zsoltiv/kokanybot/blob/master/kokanystream-rear.sh">rear</a>
+                    cameras) and <a href="https://github.com/zsoltiv/kokanybot/blob/master/kokanyaudio.sh">audio</a>
+                    and a <a href="https://github.com/zsoltiv/kokanybot/blob/master/src/main.c">C program</a> which controls all the
+                    actuators using various kernel APIs that will be elaborated upon below.
+                </p>
 				<h2>Communication</h2>
 				<p>
 					We interact with our robot using a few custom programs, named
@@ -69,8 +83,10 @@
 					needed to use C++ to build the image recognition bits (which uses
 					OpenCV).
 				</p>
-				<p>The robot can be controlled via WiFi (2.4Ghz) or Ethernet.</p>
-
+                <p>
+                    The robot can be controlled via WiFi (2.4Ghz) or Ethernet,
+                    by changing the name of the network interface used in <code>kokanybot</code>'s code.
+                </p>
 				<h2>Training an object detection model</h2>
 
 				<p>
@@ -81,8 +97,8 @@
 				</p>
 
 				<p>
-					Firstly, we found a large enough dataset on the internet (1k+ photos),
-					which was a godsend because it spared us from having to manually take
+                    Firstly, we found a <a href="https://universe.roboflow.com/new-workspace-xqnz7/rmrc-dqa9p">large enough dataset</a>
+                    on the internet (1k+ photos), which was a godsend because it spared us from having to manually take
 					pictures and tag them.
 				</p>
 
@@ -107,53 +123,6 @@
 					src="../img/inference.jpg"
 					alt="Image showcasing the accuracy of our model"
 				/>
-				<p>
-					To implement the actual capturing and transmission we used a simple
-					FFmpeg commandline in a
-					<a
-						href="https://github.com/zsoltiv/kokanybot/blob/master/kokanystream.sh"
-						target="_blank"
-						>shell script</a
-					>. We picked FFmpeg because as its
-					<a href="https://ffmpeg.org" target="_blank">project page</a>
-					suggests, it's a multimedia swiss army knife that can handle a wide
-					array of use cases, including
-					<a
-						href="http://trac.ffmpeg.org/wiki/StreamingGuide#Pointtopointstreaming"
-						target="_blank"
-						>point-to-point</a
-					>
-					streaming via UDP, allowing us to reduce the infrastructure required
-					to transmit the audiovisual data.
-				</p>
-				<p>
-					On the client side, we implemented the decoding of the video data
-					using FFmpeg’s libavformat and libavcodec libraries. Rendering the
-					video frames was tricky to figure out because pretty much all video
-					encoders store pixels in YCbCr colour space, which SDL isn’t the best
-					for.
-				</p>
-				<p>
-					The APIs of the libav* libraries are <b>huge</b>. Thankfully we only
-					really needed the
-					<a
-						href="https://ffmpeg.org/doxygen/trunk/group__lavc__encdec.html"
-						target="_blank"
-						>high level decoding API</a
-					>. The
-					<a
-						href="https://github.com/namndev/FFmpegTutorial/blob/master/learn-ffmpeg-libav-the-hard-way.md"
-						target="_blank"
-						>Learn FFmpeg libav the Hard Way</a
-					>
-					tutorial combined with the
-					<a
-						href="https://git.ffmpeg.org/gitweb/ffmpeg.git/tree/HEAD:/doc/examples"
-						target="_blank"
-						>examples</a
-					>
-					in the project's documentation also made things much easier.
-				</p>
 				<h2>Simplifying our software with device trees</h2>
 				<p>
 					Last year we used a library called
@@ -250,7 +219,7 @@
 					related problems. We considered several video formats: H.265, AV1 and
 					H.264, but in the end we settled on using raw frames from our cameras
                     to minimize latency as much as possible, since at the 2023 RoboCup,
-                    our camera's high latency has caused a lot of trouble.
+                    our camera's high latency caused a lot of trouble.
 				</p>
                 <p>
                     One of our cameras is currently a
@@ -259,6 +228,41 @@
                     V4L2 programs—such as FFmpeg—hence we wrote a
                     <a href="https://github.com/zsoltiv/kokanybot/blob/master/kokanystream-front.sh">modified script</a> to work with the Pi Camera.
                 </p>
+                <p>
+                    Linux assigns <code>/dev/videoN</code> to every camera. Since our cameras have to be handled by separate programs, and have different
+                    output formats, we must be able to tell them apart in a consistent way. Linux provides a way to do this using <a href="https://en.wikipedia.org/wiki/Udev">udev</a> rules.
+                    We gathered the attributes of the cameras using <code>udevadm</code>—a standard udev utility—and <a href="https://github.com/zsoltiv/kokanybot/blob/master/rules/60-camera.rules">wrote rules</a>
+                    to assign the <code>/dev/front-camera</code> and <code>/dev/rear-camera</code>
+                    names to our cameras.
+                </p>
+				<p>
+					On the client side, we implemented the decoding of the video data
+					using FFmpeg’s libavformat and libavcodec libraries. Rendering the
+					video frames was tricky to figure out because pretty much all video
+					encoders store pixels in YCbCr colour space, which SDL isn’t the best
+					for.
+				</p>
+				<p>
+					The APIs of the libav* libraries are <i>huge</i>. Thankfully we only
+					really needed the
+					<a
+						href="https://ffmpeg.org/doxygen/trunk/group__lavc__encdec.html"
+						target="_blank"
+						>high level decoding API</a
+					>. The
+					<a
+						href="https://github.com/namndev/FFmpegTutorial/blob/master/learn-ffmpeg-libav-the-hard-way.md"
+						target="_blank"
+						>Learn FFmpeg libav the Hard Way</a
+					>
+					tutorial combined with the
+					<a
+						href="https://git.ffmpeg.org/gitweb/ffmpeg.git/tree/HEAD:/doc/examples"
+						target="_blank"
+						>examples</a
+					>
+					in the project's documentation also made things much easier.
+				</p>
                 <h2>libhwpwm</h2>
                 <p>
                     As we've stated above, one of our main goals was to reduce the number of barely working
@@ -278,7 +282,7 @@
                     The implementation is really simple as the library only needs to poke ~8 or so files in total.
                     The library has been
                     <a href="https://github.com/zsoltiv/libhwpwm/commit/6d2fea4250a91d9d32f8358b7282dce7be7fb308">rewritten entirely</a>
-                    when we uncovered the troubles that holding onto critical file descriptors—sysfs files—cause.
+                    when we uncovered what troubles holding onto critical file descriptors—sysfs files—cause.
                 </p>
                 <p>
                     We've also encountered a rather <a href="https://forums.raspberrypi.com/viewtopic.php?t=287015">exotic bug in the
